@@ -19,7 +19,7 @@ namespace VirtueSky.Iap
 
         private IStoreController _controller;
         private IExtensionProvider _extensionProvider;
-        private bool IsInitialized { get; set; }
+        public static bool IsInitialized { get; private set; }
         private IapSettings iapSettings;
 
         private void Awake()
@@ -65,7 +65,7 @@ namespace VirtueSky.Iap
             builder.Configure<IGooglePlayConfiguration>();
 
             UnityPurchasing.Initialize(this, builder);
-            IsInitialized = true;
+            
         }
 
 
@@ -179,13 +179,14 @@ namespace VirtueSky.Iap
             _controller = controller;
             _extensionProvider = extensions;
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-            foreach (var product in _controller.products.all)
-            {
-                if (product != null && !string.IsNullOrEmpty(product.transactionID))
-                    _controller.ConfirmPendingPurchase(product);
-            }
-#endif
+// #if UNITY_ANDROID && !UNITY_EDITOR
+//             foreach (var product in _controller.products.all)
+//             {
+//                 if (product != null && !string.IsNullOrEmpty(product.transactionID))
+//                     _controller.ConfirmPendingPurchase(product);
+//             }
+// #endif
+            IsInitialized = true;
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
@@ -238,6 +239,12 @@ namespace VirtueSky.Iap
         }
 
         #region Internal API
+        private SubscriptionInfo InternalGetSubscriptionInfo(IapDataProduct product)
+        {
+            if (_controller == null || ConvertProductType(product.iapProductType) != ProductType.Subscription || !_controller.products.WithID(product.Id).hasReceipt) return null;
+            var subscriptionManager = new SubscriptionManager(InternalGetProduct(product), null);
+            return subscriptionManager.getSubscriptionInfo();
+        }
 
         private IapDataProduct InternalPurchaseProduct(string id)
         {
@@ -294,6 +301,8 @@ namespace VirtueSky.Iap
 
         public static Product GetProduct(string id) => _instance.InternalGetProduct(id);
         public static Product GetProduct(IapDataProduct product) => _instance.InternalGetProduct(product);
+        public static SubscriptionInfo GetSubscriptionInfo(IapDataProduct iapDataProduct) =>
+            _instance.InternalGetSubscriptionInfo(iapDataProduct);
 #if UNITY_IOS
         public static void RestorePurchase() => _instance.InternalRestorePurchase();
 #endif
