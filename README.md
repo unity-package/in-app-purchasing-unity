@@ -24,11 +24,11 @@
 ### Add the line below to `Packages/manifest.json`
 
 for version `1.0.8`
-```csharp
+```json
 "com.wolf-org.in-app-purchasing":"https://github.com/unity-package/in-app-purchasing-unity.git#1.0.8",
 ```
 dependency `extensions-unity-1.0.5`
-```csharp
+```json
 "com.wolf-org.extensions":"https://github.com/unity-package/extensions-unity.git#1.0.5",
 ```
 
