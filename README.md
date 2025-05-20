@@ -23,9 +23,9 @@
 
 ### Add the line below to `Packages/manifest.json`
 
-for version `1.0.8`
+for version `1.0.9`
 ```json
-"com.wolf-org.in-app-purchasing":"https://github.com/unity-package/in-app-purchasing-unity.git#1.0.8",
+"com.wolf-org.in-app-purchasing":"https://github.com/unity-package/in-app-purchasing-unity.git#1.0.9",
 ```
 dependency `extensions-unity-1.0.5`
 ```json
