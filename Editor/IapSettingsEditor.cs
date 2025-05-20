@@ -93,12 +93,14 @@ namespace VirtueSky.Iap
                 str +=
                     $"\n\t\tpublic static UnityEngine.Purchasing.Product GetProduct{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(itemName)}() => IapManager.GetProduct(IapSettings.Instance.IapDataProducts[{i}]);";
 
-                str += $"\n\t\tpublic static float PriceConfig{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(itemName)}() => IapSettings.Instance.IapDataProducts[{i}].price;";
+                str +=
+                    $"\n\t\tpublic static float PriceConfig{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(itemName)}() => IapSettings.Instance.IapDataProducts[{i}].price;";
                 if (iapDataProducts[i].iapProductType == IapProductType.Subscription)
                 {
                     str +=
                         $"\n\t\tpublic static UnityEngine.Purchasing.SubscriptionInfo GetSubscriptionInfo{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(itemName)}() => IapManager.GetSubscriptionInfo(IapSettings.Instance.IapDataProducts[{i}]);";
                 }
+
                 str += "\n";
             }
 
@@ -158,7 +160,7 @@ namespace VirtueSky.Iap
 
         string GetPathInCurrentEnvironent(string fullRelativePath)
         {
-            var upmPath = $"Packages/com.wolf-package.in-app-purchasing/{fullRelativePath}";
+            var upmPath = $"Packages/com.wolf-org.in-app-purchasing/{fullRelativePath}";
             var normalPath = $"Assets/in-app-purchasing-unity/{fullRelativePath}";
             return !File.Exists(Path.GetFullPath(upmPath)) ? normalPath : upmPath;
         }
